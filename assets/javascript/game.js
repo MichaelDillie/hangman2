@@ -15,7 +15,7 @@ $(document).ready(function () {
     var gameOver = false;
     var goodGuesses = 0;
 
-    var wordList = ["javascript", "array", "document", "element", "argument", "function", "variable", "program", "developer", "internet", "coffee", "sleep"];
+    var wordList = ["javascript", "array", "document", "element", "argument", "function", "variable", "program", "developer", "internet", "coffee", "sleep", "boolean", "null", "undefined", "number", "string", "object", "jquery", "bootstrap", "materialize", "node"];
 
     function pickWord() {
         word = wordList[Math.floor(Math.random() * wordList.length)];
@@ -26,7 +26,9 @@ $(document).ready(function () {
         displayWord = wordToGuessArray.join(" ");
         showWin = showWinArray.join(" ");
         $("#word-to-guess").text(displayWord);
-        console.log(word);
+        // ****** CHEAT CODE ****** \\
+        // console.log(word);
+        // ************************ \\
     }
 
     function letterGuess() {
@@ -49,7 +51,6 @@ $(document).ready(function () {
                         guessInWord.push(this.event.key);
                         goodGuesses++;
                         guessInWordBefore = true;
-                        console.log("good guesses " + goodGuesses + " / " + word.length + " word length");
                         // Win condition
                         if (goodGuesses === word.length) {
                             $("#word-to-guess").text(showWin);
