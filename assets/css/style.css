@@ -1,10 +1,10 @@
 body {
     text-align: center;
-    background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url("../images/BG2.png");
+    background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url("../images/BGblur.png");
     font-family: 'Roboto Condensed', sans-serif;
     color: #e4e4e4;
 }
-.game-title {
+/* .game-title {
     font-size: 4em;
     font-weight: 400;
 }
@@ -48,4 +48,4 @@ body {
     0%{opacity: 1;}
     50%{opacity: .2;}
     100%{opacity: .9;}
-}
+} */

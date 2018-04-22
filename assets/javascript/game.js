@@ -34,12 +34,14 @@ $(document).ready(function () {
             guessedBefore = false;
             guessInWordBefore = false;
             $("#keypress-error").text("");
+            // Checks if letter has already been used
             for (var i = 0; i < word.length; i++) {
                 if (this.event.key === lettersGuessed[i] || this.event.key === guessInWord[i]) {
                     $("#keypress-error").text(this.event.key + " has already been used");
                     guessedBefore = true;
                 }
             }
+            // If letter has NOT been used then check if letter is in word
             if(!guessInWordBefore && !guessedBefore) {
                 for(var i = 0; i < word.length; i++) {
                     if(this.event.key === word[i]) {
@@ -52,7 +54,7 @@ $(document).ready(function () {
                 }
                 $("#word-to-guess").text(wordToGuessArray.join(" "));
             }
-
+            // If letter has NOT been used before and letter is NOT in word
             if(!guessedBefore && !guessInWordBefore) {
                     lettersGuessed.push(this.event.key);
                     displayLettersGuessed = lettersGuessed.join(" ");
@@ -60,10 +62,13 @@ $(document).ready(function () {
                     attemptsLeft--;
                     $("#attempts-left").text(attemptsLeft);
             }
+        // Checks when ENTER was hit after start of game
+        // ** THIS IS A BUG ** \\
         } else if (this.event.keyCode === 13) {
             console.log("enter was hit");
-
-        } else {
+        }
+        // Checks if an invalid key was pressed
+        else {
             $("#keypress-error").text("You Cant Use That Key");
             console.log("not valid key");
         }
@@ -99,10 +104,12 @@ $(document).ready(function () {
             pickWord();
         }
         if (gameStarted) {
+            // Win condition
             if (goodGuesses === word.length) {
                 $("#word-to-guess").text(showWin);
                 $("#start-game").text("You Won! Press ENTER to Play Again!");
                 gameOver = true;
+            // Loss condition
             } else if(attemptsLeft <= 1) {
                 $("#attempts-left").text("0");
                 $("#start-game").text("You Loss... Press ENTER to Play Again!");
