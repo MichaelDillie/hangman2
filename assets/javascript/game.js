@@ -71,7 +71,7 @@ $(document).ready(function () {
                 // Loss condition
                 if (attemptsLeft <= 0) {
                     $("#attempts-left").text("0");
-                    $("#start-game").text("You Loss... Press ENTER to Play Again!");
+                    $("#start-game").text("You Loss... Press ENTER to Play Again");
                     gameOver = true;
                 }
             }
