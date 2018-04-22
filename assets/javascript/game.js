@@ -50,6 +50,12 @@ $(document).ready(function () {
                         goodGuesses++;
                         guessInWordBefore = true;
                         console.log("good guesses " + goodGuesses + " / " + word.length + " word length");
+                        // Win condition
+                        if (goodGuesses === word.length) {
+                            $("#word-to-guess").text(showWin);
+                            $("#start-game").text("You Won! Press ENTER to Play Again!");
+                            gameOver = true;
+                        }
                     }
                 }
                 $("#word-to-guess").text(wordToGuessArray.join(" "));
@@ -61,6 +67,12 @@ $(document).ready(function () {
                     $("#letters-guessed").text(displayLettersGuessed);
                     attemptsLeft--;
                     $("#attempts-left").text(attemptsLeft);
+                    // Loss condition
+                    if(attemptsLeft <= 0) {
+                        $("#attempts-left").text("0");
+                        $("#start-game").text("You Loss... Press ENTER to Play Again!");
+                        gameOver = true;
+                    }
             }
         // Checks when ENTER was hit after start of game
         // ** THIS IS A BUG ** \\
@@ -103,20 +115,8 @@ $(document).ready(function () {
             gameStarted = true;
             pickWord();
         }
-        if (gameStarted) {
-            // Win condition
-            if (goodGuesses === word.length) {
-                $("#word-to-guess").text(showWin);
-                $("#start-game").text("You Won! Press ENTER to Play Again!");
-                gameOver = true;
-            // Loss condition
-            } else if(attemptsLeft <= 1) {
-                $("#attempts-left").text("0");
-                $("#start-game").text("You Loss... Press ENTER to Play Again!");
-                gameOver = true;
-            } else {
-                letterGuess();
-            }
+        if (gameStarted && !gameOver) {
+            letterGuess();
         }
     };
 
