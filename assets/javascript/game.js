@@ -4,13 +4,14 @@ $(document).ready(function () {
     var lettersGuessed = [];
     var wordToGuessArray = [];
     var showWinArray = [];
+    var guessInWord = [];
     var showWin = "";
     var displayLettersGuessed = "";
     var displayWord = "";
     var word = "";
     var gameStarted = false;
     var guessedBefore = false;
-    var guessInWord = false;
+    var guessInWordBefore = false;
     var gameOver = false;
     var goodGuesses = 0;
 
@@ -31,29 +32,28 @@ $(document).ready(function () {
     function letterGuess() {
         if (this.event.key.match(/^[a-z]+$/)) {
             guessedBefore = false;
-            guessInWord = false;
-            console.log(guessInWord);
+            guessInWordBefore = false;
             $("#keypress-error").text("");
             for (var i = 0; i < word.length; i++) {
-                if (this.event.key === lettersGuessed[i]) {
+                if (this.event.key === lettersGuessed[i] || this.event.key === guessInWord[i]) {
                     $("#keypress-error").text(this.event.key + " has already been used");
                     guessedBefore = true;
                 }
             }
-            if(!guessInWord) {
+            if(!guessInWordBefore && !guessedBefore) {
                 for(var i = 0; i < word.length; i++) {
                     if(this.event.key === word[i]) {
                         wordToGuessArray.splice(i, 1, word[i]);
-                        lettersGuessed.push(this.event.key);
+                        guessInWord.push(this.event.key);
                         goodGuesses++;
-                        guessInWord = true;
+                        guessInWordBefore = true;
                         console.log("good guesses " + goodGuesses + " / " + word.length + " word length");
                     }
                 }
                 $("#word-to-guess").text(wordToGuessArray.join(" "));
             }
 
-            if(!guessedBefore && !guessInWord) {
+            if(!guessedBefore && !guessInWordBefore) {
                     lettersGuessed.push(this.event.key);
                     displayLettersGuessed = lettersGuessed.join(" ");
                     $("#letters-guessed").text(displayLettersGuessed);
@@ -74,20 +74,22 @@ $(document).ready(function () {
         lettersGuessed = [];
         wordToGuessArray = [];
         showWinArray = [];
+        guessInWord = [];
         showWin = "";
         displayLettersGuessed = "";
         displayWord = "";
         word = "";
         gameStarted = false;
         guessedBefore = false;
-        guessInWord = false;
+        guessInWordBefore = false;
         gameOver = false;
         goodGuesses = 0;
+        $("#letters-guessed").text("");
     }
 
     document.onkeyup = function (event) {
         if(gameStarted && event.keyCode == 13 && gameOver) {
-            console.log("game is finished need to restart now");
+            console.log("Restarting");
             reset();
         }
         if (!gameStarted && event.keyCode === 13) {
@@ -97,13 +99,11 @@ $(document).ready(function () {
             pickWord();
         }
         if (gameStarted) {
-            if (goodGuesses === word.length - 1) {
-                console.log("WIN");
+            if (goodGuesses === word.length) {
                 $("#word-to-guess").text(showWin);
                 $("#start-game").text("You Won! Press ENTER to Play Again!");
                 gameOver = true;
             } else if(attemptsLeft <= 1) {
-                console.log("LOSS");
                 $("#attempts-left").text("0");
                 $("#start-game").text("You Loss... Press ENTER to Play Again!");
                 gameOver = true;

@@ -1,3 +1,51 @@
 body {
     text-align: center;
+    background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url("../images/BG2.png");
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #e4e4e4;
+}
+.game-title {
+    font-size: 4em;
+    font-weight: 400;
+}
+.start-game-text {
+    font-weight: 300;
+    color: #dec22a;
+}
+#start-game {
+    animation: blink 2s linear infinite;
+}
+.word-to-guess-title {
+    font-size: 2.5em;
+}
+.word-to-guess-text {
+    font-size: 2em;
+    font-weight: 300;
+}
+.letters-guessed-title {
+    font-size: 2.5em;
+}
+.keypress-error-text {
+    font-size: 1.5em;
+    font-weight: 300;
+    color: #de7777;
+}
+.letters-guessed-area {
+    font-size: 1.5em;
+    font-weight: 300;
+}
+.attempts-left-title {
+    font-size: 2.5em;
+}
+.attempts-left-number {
+    font-size: 2em;
+    font-weight: 300;
+}
+
+
+
+@keyframes blink{
+    0%{opacity: 1;}
+    50%{opacity: .2;}
+    100%{opacity: .9;}
 }
