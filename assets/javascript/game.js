@@ -7,7 +7,8 @@ $(document).ready(function () {
     var displayWord = "";
     var word = "";
     var gameStarted = false;
-    var guessed = false;
+    var guessedBefore = false;
+    var guessInWord = false;
     var goodGuesses = 0;
 
     var wordList = ["javascript", "array", "document", "element", "argument", "function", "variable", "program", "developer", "internet", "coffee", "sleep"];
@@ -15,30 +16,47 @@ $(document).ready(function () {
     function pickWord() {
         word = wordList[Math.floor(Math.random() * wordList.length)];
         for (var i = 0; i < word.length; i++) {
-            wordToGuessArray.push("-");
+            wordToGuessArray.push("_");
         }
         displayWord = wordToGuessArray.join(" ");
         $("#word-to-guess").text(displayWord);
+        console.log(word);
     }
 
     function letterGuess() {
         if (this.event.key.match(/^[a-z]+$/)) {
+            guessedBefore = false;
+            guessInWord = false;
+            $("#keypress-error").text("");
             for (var i = 0; i < word.length; i++) {
                 if (this.event.key === lettersGuessed[i]) {
-                    console.log(this.event.key + " has been used");
-                    guessed = true;
+                    $("#keypress-error").text(this.event.key + " has already been used");
+                    guessedBefore = true;
                 }
             }
-            if(!guessed) {
-                lettersGuessed.push(this.event.key);
-                displayLettersGuessed = lettersGuessed.join(" ");
-                $("#letters-guessed").text(displayLettersGuessed);
+            if(!guessInWord) {
+                for(var i = 0; i < word.length; i++) {
+                    if(this.event.key === word[i]) {
+                        wordToGuessArray.splice(i, 0, word[i]);
+                        goodGuesses++;
+                        guessInWord = true;
+                    }
+                }
+                $("#word-to-guess").text(wordToGuessArray.join(" "));
             }
 
+            if(!guessedBefore && !guessInWord) {
+                    lettersGuessed.push(this.event.key);
+                    displayLettersGuessed = lettersGuessed.join(" ");
+                    $("#letters-guessed").text(displayLettersGuessed);
+                    attemptsLeft--;
+                    $("#attempts-left").text(attemptsLeft);
+            }
         } else if (this.event.keyCode === 13) {
             console.log("enter was hit");
 
         } else {
+            $("#keypress-error").text("You Cant Use That Key");
             console.log("not valid key");
         }
     }
