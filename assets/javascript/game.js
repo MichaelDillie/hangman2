@@ -11,6 +11,7 @@ $(document).ready(function () {
     var gameStarted = false;
     var guessedBefore = false;
     var guessInWord = false;
+    var gameOver = false;
     var goodGuesses = 0;
 
     var wordList = ["javascript", "array", "document", "element", "argument", "function", "variable", "program", "developer", "internet", "coffee", "sleep"];
@@ -31,6 +32,7 @@ $(document).ready(function () {
         if (this.event.key.match(/^[a-z]+$/)) {
             guessedBefore = false;
             guessInWord = false;
+            console.log(guessInWord);
             $("#keypress-error").text("");
             for (var i = 0; i < word.length; i++) {
                 if (this.event.key === lettersGuessed[i]) {
@@ -42,6 +44,7 @@ $(document).ready(function () {
                 for(var i = 0; i < word.length; i++) {
                     if(this.event.key === word[i]) {
                         wordToGuessArray.splice(i, 1, word[i]);
+                        lettersGuessed.push(this.event.key);
                         goodGuesses++;
                         guessInWord = true;
                         console.log("good guesses " + goodGuesses + " / " + word.length + " word length");
@@ -68,19 +71,25 @@ $(document).ready(function () {
 
     function reset() {
         attemptsLeft = 15;
-        goodGuesses = 0;
+        lettersGuessed = [];
+        wordToGuessArray = [];
+        showWinArray = [];
+        showWin = "";
+        displayLettersGuessed = "";
+        displayWord = "";
+        word = "";
         gameStarted = false;
+        guessedBefore = false;
+        guessInWord = false;
+        gameOver = false;
+        goodGuesses = 0;
     }
 
-
-
-
-
-
-
-
-
     document.onkeyup = function (event) {
+        if(gameStarted && event.keyCode == 13 && gameOver) {
+            console.log("game is finished need to restart now");
+            reset();
+        }
         if (!gameStarted && event.keyCode === 13) {
             $("#start-game").text("");
             $("#attempts-left").text(attemptsLeft);
@@ -92,12 +101,12 @@ $(document).ready(function () {
                 console.log("WIN");
                 $("#word-to-guess").text(showWin);
                 $("#start-game").text("You Won! Press ENTER to Play Again!");
-                reset();
+                gameOver = true;
             } else if(attemptsLeft <= 1) {
                 console.log("LOSS");
                 $("#attempts-left").text("0");
                 $("#start-game").text("You Loss... Press ENTER to Play Again!");
-                reset();
+                gameOver = true;
             } else {
                 letterGuess();
             }
