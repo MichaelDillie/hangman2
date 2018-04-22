@@ -42,9 +42,9 @@ $(document).ready(function () {
                 }
             }
             // If letter has NOT been used then check if letter is in word
-            if(!guessInWordBefore && !guessedBefore) {
-                for(var i = 0; i < word.length; i++) {
-                    if(this.event.key === word[i]) {
+            if (!guessInWordBefore && !guessedBefore) {
+                for (var i = 0; i < word.length; i++) {
+                    if (this.event.key === word[i]) {
                         wordToGuessArray.splice(i, 1, word[i]);
                         guessInWord.push(this.event.key);
                         goodGuesses++;
@@ -61,28 +61,27 @@ $(document).ready(function () {
                 $("#word-to-guess").text(wordToGuessArray.join(" "));
             }
             // If letter has NOT been used before and letter is NOT in word
-            if(!guessedBefore && !guessInWordBefore) {
-                    lettersGuessed.push(this.event.key);
-                    displayLettersGuessed = lettersGuessed.join(" ");
-                    $("#letters-guessed").text(displayLettersGuessed);
-                    attemptsLeft--;
-                    $("#attempts-left").text(attemptsLeft);
-                    // Loss condition
-                    if(attemptsLeft <= 0) {
-                        $("#attempts-left").text("0");
-                        $("#start-game").text("You Loss... Press ENTER to Play Again!");
-                        gameOver = true;
-                    }
+            if (!guessedBefore && !guessInWordBefore) {
+                lettersGuessed.push(this.event.key);
+                displayLettersGuessed = lettersGuessed.join(" ");
+                $("#letters-guessed").text(displayLettersGuessed);
+                attemptsLeft--;
+                $("#attempts-left").text(attemptsLeft);
+                // Loss condition
+                if (attemptsLeft <= 0) {
+                    $("#attempts-left").text("0");
+                    $("#start-game").text("You Loss... Press ENTER to Play Again!");
+                    gameOver = true;
+                }
             }
-        // Checks when ENTER was hit after start of game
-        // ** THIS IS A BUG ** \\
+            // Checks when ENTER was hit after start of game
+            // ** THIS IS A BUG ** \\
         } else if (this.event.keyCode === 13) {
-            console.log("enter was hit");
+            console.log("enter was hit and this is the bug");
         }
         // Checks if an invalid key was pressed
         else {
             $("#keypress-error").text("You Cant Use That Key");
-            console.log("not valid key");
         }
     }
 
@@ -105,7 +104,7 @@ $(document).ready(function () {
     }
 
     document.onkeyup = function (event) {
-        if(gameStarted && event.keyCode == 13 && gameOver) {
+        if (gameStarted && event.keyCode == 13 && gameOver) {
             console.log("Restarting");
             reset();
         }
