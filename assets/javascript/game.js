@@ -3,6 +3,8 @@ $(document).ready(function () {
     var attemptsLeft = 15;
     var lettersGuessed = [];
     var wordToGuessArray = [];
+    var showWinArray = [];
+    var showWin = "";
     var displayLettersGuessed = "";
     var displayWord = "";
     var word = "";
@@ -17,8 +19,10 @@ $(document).ready(function () {
         word = wordList[Math.floor(Math.random() * wordList.length)];
         for (var i = 0; i < word.length; i++) {
             wordToGuessArray.push("_");
+            showWinArray.push(word[i]);
         }
         displayWord = wordToGuessArray.join(" ");
+        showWin = showWinArray.join(" ");
         $("#word-to-guess").text(displayWord);
         console.log(word);
     }
@@ -37,9 +41,10 @@ $(document).ready(function () {
             if(!guessInWord) {
                 for(var i = 0; i < word.length; i++) {
                     if(this.event.key === word[i]) {
-                        wordToGuessArray.splice(i, 0, word[i]);
+                        wordToGuessArray.splice(i, 1, word[i]);
                         goodGuesses++;
                         guessInWord = true;
+                        console.log("good guesses " + goodGuesses + " / " + word.length + " word length");
                     }
                 }
                 $("#word-to-guess").text(wordToGuessArray.join(" "));
@@ -61,6 +66,11 @@ $(document).ready(function () {
         }
     }
 
+    function reset() {
+        attemptsLeft = 15;
+        goodGuesses = 0;
+        gameStarted = false;
+    }
 
 
 
@@ -73,12 +83,21 @@ $(document).ready(function () {
     document.onkeyup = function (event) {
         if (!gameStarted && event.keyCode === 13) {
             $("#start-game").text("");
+            $("#attempts-left").text(attemptsLeft);
             gameStarted = true;
             pickWord();
         }
         if (gameStarted) {
-            if (goodGuesses === word.length) {
+            if (goodGuesses === word.length - 1) {
                 console.log("WIN");
+                $("#word-to-guess").text(showWin);
+                $("#start-game").text("You Won! Press ENTER to Play Again!");
+                reset();
+            } else if(attemptsLeft <= 1) {
+                console.log("LOSS");
+                $("#attempts-left").text("0");
+                $("#start-game").text("You Loss... Press ENTER to Play Again!");
+                reset();
             } else {
                 letterGuess();
             }
